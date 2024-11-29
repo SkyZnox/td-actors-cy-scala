@@ -4,7 +4,7 @@ import java.time.OffsetDateTime
 import java.util.UUID
 import scala.collection.immutable.SortedSet
 
-import org.apache.pekko.actor.typed.{ ActorRef, Behavior }
+import org.apache.pekko.actor.typed.{ActorRef, Behavior}
 import org.apache.pekko.actor.typed.scaladsl.Behaviors
 
 enum Message {
@@ -22,7 +22,7 @@ case class RoomActor(name: String) {
 
   private def handle(posts: SortedSet[Post]): Behavior[Message] = {
     Behaviors.receiveMessage {
-      case Message.CreatePost(author, content) =>{
+      case Message.CreatePost(author, content) => {
         handle(posts + Post(UUID.randomUUID(), author, OffsetDateTime.now(), content))
         Behaviors.same
       }

@@ -78,12 +78,12 @@ case class Controller(
   given JsonFormat[SortedSet[PostOutput]] = new JsonFormat[SortedSet[PostOutput]] {
     def write(posts: SortedSet[PostOutput]): JsValue = JsArray(posts.toVector.map(_.toJson))
 
-        def read(value: JsValue): SortedSet[PostOutput] = {
-          value match {
-            case JsArray(value) => SortedSet()
-            case _ => throw DeserializationException("Expected ISO 8601 OffsetDateTime string")
-          }
-        }
+    def read(value: JsValue): SortedSet[PostOutput] = {
+      value match {
+        case JsArray(value) => SortedSet()
+        case _ => throw DeserializationException("Expected ISO 8601 OffsetDateTime string")
+      }
+    }
   }
 
   given RootJsonFormat[PostInput] = {
@@ -141,15 +141,15 @@ case class Controller(
   }
 
   private def listRooms(): Future[ToResponseMarshallable] = {
-  rooms
-    .ask[List[ActorRef[Message]]](ref => ListRooms(ref))
-    .map { roomRefs =>
-      val roomNames = roomRefs.map(_.path.name)
-      StatusCodes.OK -> roomNames.toJson
-    }
+    rooms
+      .ask[List[ActorRef[Message]]](ref => ListRooms(ref))
+      .map { roomRefs =>
+        val roomNames = roomRefs.map(_.path.name)
+        StatusCodes.OK -> roomNames.toJson
+      }
   }
 
-  private def getRoom(roomId: String) : Future[ToResponseMarshallable] = {
+  private def getRoom(roomId: String): Future[ToResponseMarshallable] = {
     rooms
       .ask[Option[ActorRef[Message]]](ref => GetRoom(roomId, ref))
       .flatMap {
@@ -163,7 +163,7 @@ case class Controller(
   }
 
 
-  private def createPost(roomId: String, input: PostInput) : Future[ToResponseMarshallable] = {
+  private def createPost(roomId: String, input: PostInput): Future[ToResponseMarshallable] = {
     rooms
       .ask[Option[ActorRef[Message]]](ref => GetRoom(roomId, ref))
       .flatMap {
@@ -177,7 +177,7 @@ case class Controller(
   }
 
 
-  private def listPosts(roomId: String) : Future[ToResponseMarshallable] = {
+  private def listPosts(roomId: String): Future[ToResponseMarshallable] = {
     rooms
       .ask[Option[ActorRef[Message]]](ref => GetRoom(roomId, ref))
       .flatMap {
