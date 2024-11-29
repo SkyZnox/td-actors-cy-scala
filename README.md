@@ -1,1 +1,1 @@
-# td-actors-cy-scala
+# TD about Actors in Scala
