@@ -26,7 +26,12 @@ object Main {
 
     val rooms = context.spawn(
       RoomListActor(
-        Map("toto" -> context.spawn(RoomActor("toto"), "toto"))
+        Map(
+          "toto" -> context.spawn(RoomActor("toto"), "toto"),
+          "michel" -> context.spawn(RoomActor("michel"), "michel"),
+          "albanito" -> context.spawn(RoomActor("albanito"), "albanito"),
+          "helianito" -> context.spawn(RoomActor("helianito"), "helianito")
+        )
       ),
       "RoomListActor"
     )

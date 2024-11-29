@@ -89,7 +89,7 @@ case class Controller(
   given RootJsonFormat[PostInput] = {
     jsonFormat2(PostInput.apply)
   }
-  
+
   given RootJsonFormat[RoomInput] = {
     jsonFormat1(RoomInput.apply)
   }
@@ -140,13 +140,13 @@ case class Controller(
     complete(StatusCodes.Created)
   }
 
-  private def listRooms() : Future[ToResponseMarshallable] = {
-//    rooms
-//      .ask[List[ActorRef[Message]]](ref => ListRooms(ref))
-//      .map{
-//        
-//      }
-    ???
+  private def listRooms(): Future[ToResponseMarshallable] = {
+  rooms
+    .ask[List[ActorRef[Message]]](ref => ListRooms(ref))
+    .map { roomRefs =>
+      val roomNames = roomRefs.map(_.path.name)
+      StatusCodes.OK -> roomNames.toJson
+    }
   }
 
   private def getRoom(roomId: String) : Future[ToResponseMarshallable] = {
